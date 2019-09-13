@@ -25,6 +25,8 @@ main {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition-property: transform;
+    transition-duration: 1s;
 }
 
 .viewport {
@@ -37,8 +39,21 @@ main {
 
 @mixin degs($action-radius) {
     @for $i from 0 through 359 {
+        @keyframes rotateDeg#{$i} {
+            0% {
+              transform: rotate(45deg) translate($action-radius) rotate(-45deg);
+            }
+            100% {
+              transform: rotate(#{$i}deg) translate($action-radius) rotate(-#{$i}deg);
+            }
+          }
+
         .deg#{$i} {
-            transform: rotate(#{$i}deg) translate($action-radius) rotate(-#{$i}deg);
+            animation-duration: 1s;
+            animation-fill-mode: forwards;
+            animation-timing-function: ease-in-out;
+            animation-name: rotateDeg#{$i};
+            transform: rotate(45deg) translate($action-radius) rotate(-45deg);;//rotate(#{$i}deg) translate($action-radius) rotate(-#{$i}deg);
         }
     }
 }
@@ -62,7 +77,7 @@ main {
     $action-size: 10vh;
 
     .action {
-        font-size: 3vh;
+        font-size: 2.5vh;
         width: $action-size;
         height: $action-size;
         top: $viewport-radius - ($action-size / 2);
@@ -94,7 +109,7 @@ main {
     $action-size: 10vw;
 
     .action {
-        font-size: 3vw;
+        font-size: 2.5vw;
         width: $action-size;
         height: $action-size;
         top: $viewport-radius - ($action-size / 2);
