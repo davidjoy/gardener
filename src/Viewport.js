@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 function viewportCoordsToLocation(viewpoint, left, top, areaSize, zoom, viewportSize) {
     const zoomedAreaSize = areaSize * zoom;
@@ -18,8 +19,7 @@ function viewportCoordsToLocation(viewpoint, left, top, areaSize, zoom, viewport
     };
 }
 
-export default function Viewport(props) {
-    const [clickSpot, setClickSpot] = useState('');
+export default function Viewport({ minimized }) {
     const handleClick = (event) => {
         const offsetX = event.nativeEvent.layerX;
         const offsetY = event.nativeEvent.layerY;
@@ -27,16 +27,18 @@ export default function Viewport(props) {
         const zoom = 1;
         const radius = 7;
         const areaSize = event.currentTarget.clientWidth / (radius * 2); //32;
-        console.log(areaSize);
         const viewportSize = event.currentTarget.clientWidth; //areaSize * ((radius * 2) + 1);
-        console.log(event.currentTarget.clientWidth);
-        console.log(event.currentTarget.clientHeight);
         const { x, y } = viewportCoordsToLocation(viewpoint, offsetX, offsetY, areaSize, zoom, viewportSize);
-        setClickSpot(`${x} ${y}`);
+        console.log(`${x} ${y}`);
     };
 
-    return <div className="viewport" onClick={handleClick}>
+    const viewportClass = classNames('viewport', {
+        minimized,
+    });
 
-        I am a viewport. {clickSpot}
-    </div>
+    return (
+        <div className={viewportClass} onClick={handleClick}>
+            <div className="region-wrapper"></div>
+        </div>
+    );
 }

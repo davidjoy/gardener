@@ -1,9 +1,20 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useEffect } from 'react';
+import classNames from 'classnames';
 
-export default function Action(props) {
-    return <button style={{ animationDelay: props.delay }} className={`action ${props.rotation}`}>
-        {/* <FontAwesomeIcon icon={props.icon} /> */}
-        {props.label}
-    </button>
+export default function Action({ className, label, clickHandler }) {
+    const classes = classNames('action', className);
+
+    useEffect(() => {
+        return () => {
+            console.log('unmount!');
+        }
+    })
+    return (
+        <button key={label}
+            className={classes}
+            onClick={clickHandler}
+        >
+            {label}
+        </button>
+    )
 }

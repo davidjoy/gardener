@@ -3,124 +3,110 @@ body {
     color: white;
 }
 
+$padding: 6vmin;
+$viewport-radius: 50vmin - $padding;
+$action-size: 10vmin;
+
 main {
     display: flex;
-
+    padding: $padding;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
     flex-direction: column;
     height: 100vh;
-}
 
-.action {
-    background-color: #584c64;
-    border-radius: 50%;
-    box-sizing: border-box;
-    border: 1px solid #382c44;
-    color: white;
-    display: block;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition-property: transform;
-    transition-duration: 1s;
-}
+    .wrapper {
+        width: $viewport-radius * 2;
+        height: $viewport-radius * 2;
+        position: relative;
 
-.viewport {
-    background-color: #27175f;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .viewport {
+            background-color: #27175f;
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition-duration: 0.5s;
+            transition-property: width, height;
 
-@mixin degs($action-radius) {
-    @for $i from 0 through 359 {
-        @keyframes rotateDeg#{$i} {
-            0% {
-              transform: rotate(45deg) translate($action-radius) rotate(-45deg);
-              opacity: 0;
+            .region-wrapper {
+                width: 1000px;
+                height: 1000px;
+                background: rgb(154,154,154);
+                background: radial-gradient(circle, rgba(154,154,154,1) 14%, rgba(9,121,61,1) 53%, rgba(0,159,255,1) 84%);
             }
-            100% {
-              transform: rotate(#{$i}deg) translate($action-radius) rotate(-#{$i}deg);
-              opacity: 1;
-            }
-          }
+        }
 
-        .deg#{$i} {
-            animation-duration: 1s;
-            animation-fill-mode: forwards;
-            animation-timing-function: ease-in-out;
-            animation-name: rotateDeg#{$i};
+        .viewport.minimized {
+            width: 30%;
+            height: 30%;
+        }
+
+        .action {
+            background-color: #584c64;
+            border-radius: 50%;
+            box-sizing: border-box;
+            border: 1px solid #382c44;
+            color: white;
+            display: block;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition-property: transform, opacity;
+            transition-duration: 1s;
+            transition-delay: 0.5s;
+            font-size: 2.5vmin;
+            width: $action-size;
+            height: $action-size;
+            top: $viewport-radius - ($action-size / 2);
+            left: $viewport-radius - ($action-size / 2);
             opacity: 0;
-            transform: rotate(45deg) translate($action-radius) rotate(-45deg);;//rotate(#{$i}deg) translate($action-radius) rotate(-#{$i}deg);
+            transform: rotate(45deg) translate($viewport-radius) rotate(-45deg);
+        }
+
+        @for $i from 0 through 359 {
+            @keyframes rotateDeg#{$i} {
+                0% {
+                    transform: rotate(45deg) translate($viewport-radius) rotate(-45deg);
+                    opacity: 0;
+                }
+                100% {
+                    transform: rotate(#{$i}deg) translate($viewport-radius) rotate(-#{$i}deg);
+                    opacity: 1;
+                }
+            }
+
+            .deg#{$i} {
+                // animation-duration: 1s;
+                // animation-fill-mode: forwards;
+                // animation-timing-function: ease-in-out;
+                // animation-name: rotateDeg#{$i};
+                opacity: 1;
+                transform: rotate(#{$i}deg) translate($viewport-radius) rotate(-#{$i}deg);
+                // transform: rotate(45deg) translate($viewport-radius) rotate(-45deg);;//rotate(#{$i}deg) translate($viewport-radius) rotate(-#{$i}deg);
+            }
+        }
+
+        .delay0 {
+            animation-delay: 0s
+        }
+
+        @for $i from 1 through 9 {
+            .delay0#{$i} {
+                animation-delay: ($i / 10) + 0s;
+            }
+        }
+
+        @for $i from 10 through 19 {
+            .delay#{$i} {
+                animation-delay: ($i / 10) + 0s;
+            }
         }
     }
 }
 
-@media (orientation: landscape) {
-    $padding: 6vh;
-    $viewport-radius: 50vh - $padding;
-
-    @include degs($viewport-radius);
-
-    main {
-        padding: $padding;
-    }
-
-    .wrapper {
-        width: $viewport-radius * 2;
-        height: $viewport-radius * 2;
-        position: relative;
-    }
-
-    $action-size: 10vh;
-
-    .action {
-        font-size: 2.5vh;
-        width: $action-size;
-        height: $action-size;
-        top: $viewport-radius - ($action-size / 2);
-        left: $viewport-radius - ($action-size / 2);
-    }
-
-    .viewport {
-        width: 100%;
-        height: 100%;
-    }
-}
-
-@media (orientation: portrait) {
-    $padding: 6vw;
-    $viewport-radius: 50vw - $padding;
-
-    @include degs($viewport-radius);
-
-    main {
-        padding: $padding;
-    }
-
-    .wrapper {
-        width: $viewport-radius * 2;
-        height: $viewport-radius * 2;
-        position: relative;
-    }
-
-    $action-size: 10vw;
-
-    .action {
-        font-size: 2.5vw;
-        width: $action-size;
-        height: $action-size;
-        top: $viewport-radius - ($action-size / 2);
-        left: $viewport-radius - ($action-size / 2);
-    }
-
-    .viewport {
-        width: 100%;
-        height: 100%;
-    }
-}
